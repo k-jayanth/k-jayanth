@@ -371,6 +371,59 @@ html { scroll-padding-top:76px; }
   .journey-page .mode-switch { grid-template-columns:1fr; }
 }
 
+/*
+ * Large desktop / 4K layout.
+ *
+ * The scroll-journey rail used viewport-sized right padding while .section-shell
+ * remained capped at 1420px. Above roughly 1500px, those two constraints could
+ * consume the entire section width and visibly squeeze its content. This block
+ * makes each journey section full-width, then centers its existing content area
+ * inside the usable space to the left of a capped map rail.
+ */
+@media (min-width:1501px) {
+  :root {
+    --journey-rail-width:clamp(480px,32vw,760px);
+    --journey-content-max:1240px;
+    --journey-gutter:clamp(2.5rem,5vw,5.5rem);
+    --journey-panel-offset:max(var(--journey-gutter),calc((100vw - var(--journey-rail-width) - var(--journey-content-max)) / 2));
+  }
+
+  .journey-world { width:var(--journey-rail-width); min-width:0; }
+  .journey-checkpoint::after { right:calc(var(--journey-rail-width) + 1.15rem); }
+
+  .journey-page .robotics-hero { padding-right:var(--journey-rail-width); }
+  .journey-page .hero-image { width:calc(100% - var(--journey-rail-width)); }
+  .journey-page .hero-shade { right:var(--journey-rail-width); }
+  .journey-page .hero-content { width:calc(100vw - var(--journey-rail-width)); }
+
+  .journey-page .section-shell,
+  .journey-page .profile-section {
+    width:100%;
+    max-width:none;
+    padding-left:var(--journey-panel-offset);
+    padding-right:calc(var(--journey-rail-width) + var(--journey-panel-offset));
+  }
+  .journey-page .profile-section::before {
+    left: calc(max(clamp(1.25rem,5vw,5.5rem),calc((70vw - 1520px)/2 + 5.5rem)) + 44px);
+  }
+
+  .journey-page .experience-section::before { right:var(--journey-rail-width); }
+  .journey-page .projects-section::before {
+    left:var(--journey-panel-offset);
+    right:calc(var(--journey-rail-width) + var(--journey-panel-offset));
+  }
+  .journey-page .capabilities-section::before { left:calc(var(--journey-panel-offset) + 44px); }
+
+  .site-footer {
+    padding-left:var(--journey-panel-offset);
+    padding-right:calc(var(--journey-rail-width) + var(--journey-panel-offset));
+  }
+  .site-footer::before {
+    left:var(--journey-panel-offset);
+    right:calc(var(--journey-rail-width) + var(--journey-panel-offset));
+  }
+}
+
 @media (prefers-reduced-motion:reduce) {
   .journey-route-trace { stroke-dashoffset:0 !important; }
   .autonomous-car { transform:translate(59px,49px) rotate(0deg) !important; }
